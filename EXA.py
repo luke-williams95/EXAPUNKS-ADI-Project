@@ -6,25 +6,25 @@ class EXA:
         # dict/map of all the known commands. 
         # Keys are the commands (str), the value pairs are a list that indicate each valid entry for an arugment
         self.functions = {
-                    'COPY': (self.COPY, ['r/n', 'r'])
-                    'ADDI': (self.ADDI, ['r/n', 'r/n', 'r'])
-                    'SUBI': (self.SUBI, ['r/n', 'r/n', 'r'])
-                    'MULI': (self.MULI, ['r/n', 'r/n', 'r'])
-                    'DIVI': (self.DIVI, ['r/n', 'r/n', 'r'])
-                    'TEST': (self.TEST, ['r/n', 'op', 'r/n'])
-                    'MARK': (self.MARK, [])
-                    'JUMP': (self.JUMP, [])
-                    'TJMP': (self.TJMP, [])
-                    'FJMP': (self.FJMP, [])
+                    'COPY': (self.COPY, ['r/n', 'r']),
+                    'ADDI': (self.ADDI, ['r/n', 'r/n', 'r']),
+                    'SUBI': (self.SUBI, ['r/n', 'r/n', 'r']),
+                    'MULI': (self.MULI, ['r/n', 'r/n', 'r']),
+                    'DIVI': (self.DIVI, ['r/n', 'r/n', 'r']),
+                    'TEST': (self.TEST, ['r/n', 'op', 'r/n']),
+                    'MARK': (self.MARK, []),
+                    'JUMP': (self.JUMP, []),
+                    'TJMP': (self.TJMP, []),
+                    'FJMP': (self.FJMP, []),
                 }
                     
         
     # __main__ calls this first with the given input: 'ADDI 10 X T'
     def interpret(self, usr_in):
         cmd_tuple = EXA.parse(usr_in) # EXA.parsed 'ADDI arg0 arg1 arg2' --> ('ADDI', [arg0, arg1, arg2])
-        if not self.check_input(cmd_tuple) # checks for valid argument entries
+        if not self.check_input(cmd_tuple): # checks for valid argument entries
             print('Invalid input!')
-            return self.function[
+            #return self.function[]
         self.functions[cmd_tuple[0]][0](cmd_tuple[1]) # this calls the appropriate command method and gives the arguments.
         
     @staticmethod
@@ -64,7 +64,7 @@ class EXA:
         for tup in args_list: # tup = ('r/n', 'X'), ('op', '='), etc.
         
             if tup[0] == 'r':
-                if tup[1] not in self.registers
+                if tup[1] not in self.registers:
                     print('This is supposed to be a register')
                     return False
                     
@@ -74,7 +74,7 @@ class EXA:
                     return False
                     
             else: # this is a 'r/n'
-                if (type(tup[1]) != int) and (tup[1] not in self.registers)
+                if (type(tup[1]) != int) and (tup[1] not in self.registers):
                     print('This is neither a number or register... you did something wrong!')
                     return False
                     
@@ -94,12 +94,30 @@ class EXA:
         # Should crash if len(cmd_list) != 3
         # ['X', 50, 'X']
         # X = 20
-        operand_list = [inspect(cmd_list[0]), inspect(cmd_list[1])]
+        operand_list = [self.inspect(cmd_list[0]), self.inspect(cmd_list[1])]
         self.registers[cmd_list[2]] = operand_list[0] + operand_list[1] # update register value
         print(self.registers[cmd_list[2]]) # check that register value was updated
         return operand_list[0] + operand_list[1]
 
-        
+
+    def SUBI(self, cmd_list):
+        pass
+    def MULI(self, cmd_list):
+        pass
+    def DIVI(self, cmd_list):
+        pass
+    def COPY(self, cmd_list):
+        pass
+    def MARK(self, cmd_list):
+        pass
+    def TEST(self, cmd_list):
+        pass
+    def JUMP(self, cmd_list):
+        pass
+    def TJMP(self, cmd_list):
+        pass
+    def FJMP(self, cmd_list):
+        pass
         
 
 if __name__ == '__main__': # For local testing
