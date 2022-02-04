@@ -1,6 +1,10 @@
 class EXA:
+
+    # Singleton
+
     # example: ADDI 30 X T
     def __init__(self):
+        # Use dunder init to create stuff you only want to create once, i.e func_mapper
         # rewrite as a dictionary, for every operation you can check to see if the operand is in the dictionary
         self.registers = {'X':0, 'T':0, 'F':0}
     # register or number, register or number, register
@@ -29,6 +33,7 @@ class EXA:
     def interpret(self, usr_in:str):
         
         cmd_tuple = EXA.parse(usr_in)
+        # func_mapper = {'ADDI': self.ADDI, 'SUBI': self.SUBI ....
         
         if cmd_tuple[0] == 'ADDI':
             self.ADDI(cmd_tuple[1]) 
@@ -50,21 +55,24 @@ class EXA:
         """
 
     """Non 'EXA' Functions"""
-    def parse(usr_in: str): # This works within the EXA class as long as there is no 'self' argument. Ask Dave about where to put this
-            """Checks for valid input."""
+    #look up later. staticmethods, class methods
+    @staticmethod
+    def parse(usr_in: str):
+            """Parses user input into the 'cmd_tuple' with the following format ('operation', ['op', 'op', 'op'])"""
             # "   ADDI   30  X T" ===> ("ADDI", [30, "X", "T"])
             string_list = usr_in.strip().split(' ', 1) # Split the first string from usr_in using " " as your delimiter
             # print(string_list)
             op_type = string_list[0] # op_type now contains the type of operation being performed
             #print(op_type)
             operand_list = string_list[-1].strip().split() # Split the remainder of string_list into a list of words
-            print(operand_list)
+            #print(operand_list)
             return (op_type, operand_list)
 
 if __name__ == '__main__': # For local testing
+    exa = EXA()
     op_tuple = EXA.parse("   ADDI  30  X     T")
-    #print(op_tuple)
-
-    #exa = EXA()
+    print(op_tuple)
+    #string = "ADDI 5 5 T"
+    #print(exa.interpret(string))
     #exa.registers['X'] = 2
     #exa.registers['T'] = 3
