@@ -2,60 +2,69 @@ class EXA:
     # example: ADDI 30 X T
     def __init__(self):
         # rewrite as a dictionary, for every operation you can check to see if the operand is in the dictionary
-        self.registers = {
-          'X': 0
-          'T': 0
-          'F': 0
-        }
+        self.registers = {'X':0, 'T':0, 'F':0}
     # register or number, register or number, register
-    def inspect(self, ):
-        """Checks the registers to see if arguments match the dict keys, otherwise pass the args along"""
-        if register in self.registers
-            print('valid inputs')
-            return 
-        
-    def parse(self, ):
-        """Checks for valid input."""
-        if 
     
-    def ADDI(self, reg_num1, reg_num2, register):
-        """Multiply the register values or numbers and store result in register."""
-        self.parse()
-        if reg_num1 in self.registers:
-            op1 = self.registers[reg_num1]
+    def inspect(self, operand):
+        """Checks the registers to see if arguments match the dict keys, otherwise pass the args along"""
+        if operand in self.registers:
+            return self.registers[operand]
         else:
-            op1 = reg_num1
-        if reg_num2 in self.registers:
-            op2 = self.registers[reg_num2]
-        else:
-            op2 = reg_num2
+            return int(operand)
+    
+    def ADDI(self, cmd_list):
+        """Add the register values or numbers and store result in register. Called from interpret()"""
+        # At this point we expect cmd_list to be a properly formatted list object
+        # inspects the command list and puts the proper values in the operand_list
+        # Should crash if len(cmd_list) != 3
+        operand_list = []
+        for cmd in cmd_list:
+            operand_list.append(self.inspect(cmd))
         
-        self.registers[register] = op1 + op2
-        return op1 + op2
-        
-        
-    def SUBI(self, reg_num1, reg_num2, register):
-        
+        self.registers[operand_list[2]] = operand_list[0] + operand_list[1]
+         
+        return operand_list[0] + operand_list[1]
 
-    def MULI(self, reg_num1, reg_num2, register):
-        """Multiply the register values or numbers and store result in register."""
-        if reg_num1 in self.registers:
-            op1 = self.registers[reg_num1]
-        else:
-            op1 = reg_num1
-        if reg_num2 in self.registers:
-            op2 = self.registers[reg_num2]
-        else:
-            op2 = reg_num2
+
+    def interpret(self, usr_in:str):
         
-        self.registers[register] = op1 * op2
-        return op1 * op2
+        cmd_tuple = EXA.parse(usr_in)
+        
+        if cmd_tuple[0] == 'ADDI':
+            self.ADDI(cmd_tuple[1]) 
+        else:
+            print('Command not recognised')
 
-    def DIVI(self, reg_num1, reg_num2, register):
+        """
+        if cmd_tuple[0] == 'SUBI':
+            EXA.SUBI(cmd_tuple[1]) 
+        
+        if cmd_tuple[0] == 'MULI':
+            EXA.MULI(cmd_tuple[1])
 
-    def COPY(self, reg_num, register):
-        """Store register value or number into a register."""
-        # def checkinput
-        if reg_num in self.registers:
-            return register = self.registers[reg_num]
-        return self.registers[register] = reg_num
+        if cmd_tuple[0] == 'DIVI':
+            EXA.DIVI(cmd_tuple[1])
+
+        if cmd_tuple[0] == 'COPI':
+            EXA.COPI(cmd_tuple[1])
+        """
+
+    """Non 'EXA' Functions"""
+    def parse(usr_in: str): # This works within the EXA class as long as there is no 'self' argument. Ask Dave about where to put this
+            """Checks for valid input."""
+            # "   ADDI   30  X T" ===> ("ADDI", [30, "X", "T"])
+            string_list = usr_in.strip().split(' ', 1) # Split the first string from usr_in using " " as your delimiter
+            # print(string_list)
+            op_type = string_list[0] # op_type now contains the type of operation being performed
+            #print(op_type)
+            operand_list = string_list[-1].strip().split() # Split the remainder of string_list into a list of words
+            print(operand_list)
+            return (op_type, operand_list)
+
+if __name__ == '__main__': # For local testing
+    op_tuple = EXA.parse("   ADDI  30  X     T")
+    #print(op_tuple)
+
+    #exa = EXA()
+    #exa.registers['X'] = 2
+    #exa.registers['T'] = 3
