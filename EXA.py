@@ -6,24 +6,30 @@ class EXA:
         # dict/map of all the known commands. 
         # Keys are the commands (str), the value pairs are a list that indicate each valid entry for an arugment
         self.functions = {
-                    'ADDI': ['r/n', 'r/n', 'r']
-                    'COPY': ['r/n', 'r']
-                    ....
+                    'COPY': ('r/n', 'r')
+                    'ADDI': ('r/n', 'r/n', 'r')
+                    'SUBI': ('r/n', 'r/n', 'r')
+                    'MULI': ('r/n', 'r/n', 'r')
+                    'DIVI': ('r/n', 'r/n', 'r')
+                    'TEST': ('r/n', 'op', 'r/n')
+                    'MARK': 
+                    'JUMP': 
+                    'TJMP': 
+                    'FJMP': 
                 }
                     
         
-    def interpret(self, usr_in:str):
-        # EXAobj = EXA(input('put your command here:'))
-        # EXAobj --> 'ADDI X X 5' which has self.registers, self.functions
-        cmd_tuple = EXA.parse(usr_in)
-        # self.parsed --> ('ADDI', [arg0, arg1, arg2])
+    # __main__ calls this first with the given input: 'ADDI 10 X T'
+    def interpret(self, usr_in):
+        cmd_tuple = EXA.parse(usr_in) # EXA.parsed 'ADDI arg0 arg1 arg2' --> ('ADDI', [arg0, arg1, arg2])
+        if not self.check_input(cmd_tuple) # checks for valid argument entries
+            print('Invalid input!')
+            return
+        return self.
         
-        self.valid_input(self.arg_compare(cmd_tuple))
-        #
-        # 'ADDI' --> valid_args_for_ADDI = reg_num, reg_num, reg_only
-    
-    def parse(usr_in: str): # This works within the EXA class as long as there is no 'self' argument. Ask Dave about where to put this
-            """Checks for valid input."""
+    @staticmethod
+    def parse(usr_in): # This works within the EXA class as long as there is no 'self' argument. Ask Dave about where to put this
+            """Digests the user input to a useful format."""
             # "   ADDI   30  X T" ===> ("ADDI", ["30", "X", "T"])
             string_list = usr_in.strip().split(' ', 1) # Split the first string from usr_in using " " as your delimiter
             # print(string_list)
@@ -33,23 +39,38 @@ class EXA:
             print(operand_list)
             return (op_type, operand_list)
     
-    def arg_compare(self, cmd_tuple):
+    def check_input(self, cmd_tuple):
         """Accepts the cmd_tuple and outputs a list of tuples, 
         each tuple showing a valid argument entry and the given argument."""
-        valid_args = self.functions(cmd_tuple[0])
-        given_args = cmd_tuple[1]
-        # valid_args = ['r/n', 'r/n', 'r']
-        # given_args = ['30', 'X', 'T']
-        args_list = [(valid, given) for valid, given in zip(valid_args, given_args)]
-        return args_list
-        # args_list = [('r/n', '30'),..., ('r', 'T')]
+        valid_args = self.functions(cmd_tuple[0]) # valid_args = ['r/n', 'r/n', 'r']
+        given_args = cmd_tuple[1] # given_args = ['30', 'X', 'T']
+        
+        if len(valid_args) != len(given_args): # check first that there are the correct number of arguments.
+            print('There are too many or too few arguments!')
+            return False
+        
+        args_list = [(valid, given) for valid, given in zip(valid_args, given_args)] # make tuples of arg by arg comparison valid vs. given
+        
+        self.valid_args(args_list) # args_list = [('r/n', '30'),..., ('r', 'T')]
     
-    def valid_input(args_list):
+    def valid_args(args_list):
         """checks each entry for valid argument."""
-        for tup in args_list:
-        # tup = ('r/n', 'X')
-            if tup[0] == 'r/n':
-                if tup[1] in self.registers:
+        for tup in args_list: # tup = ('r/n', 'X'), ('op', '='), etc.
+        
+            if tup[0] == 'r':
+                if tup[1] not in self.registers
+                    print('This is supposed to be a register')
+                    return False
+                    
+            elif tup[0] == 'op':
+                if tup[1] not in '<=>':
+                    print('This has to be a comparison operator')
+                    return False
+                    
+            else: # this is a 'r/n'
+                if (type(tup[1]) != int) and (tup[1] not in self.registers)
+                    print('This is neither a number or register... you did something wrong!')
+                    return False
                     
             
         
