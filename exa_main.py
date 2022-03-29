@@ -1,9 +1,11 @@
 """exa_main.py"""
 import exa
 
-file_directory = {1: 'instructions_pt1.txt', 2: 'instructions_pt2.txt', 3: 'instructions_pt3.txt', 4: 'instructions2_pt4.txt'}
-# file_select = int(input('Part 1, 2, 3, or 4?: '))
-file_select = 3
+file_directory = {
+                    '100': [1,1,1,1,1,1,1,1,1,1],
+                    '200': [],
+                    '400': [],
+                    }
 
 instructions_pt1 = """COPY 647 X
 MODI X 7 T
@@ -38,29 +40,20 @@ SUBI T 1 T
 TJMP LOOP
 """
 
-instructions_pt4 = """GRAB 400
-COPY 1 X
-MARK A
-SEEK -9999
-ADDI X 1 X
-TEST X < 50
-FJMP D
-MARK B
+instructions_pt4 = """GRAB 100
+MARK FILE_READ
+ADDI F X X
 TEST EOF
-TJMP C
-MODI X F T
-FJMP A
-JUMP B
-MARK C
+FJMP FILE_READ
+DROP
+GRAB 200
 COPY X F
-JUMP A
-MARK D
 DROP
 """
 
-target_instructions = file_directory[file_select]
-
 punk = exa.EXA()
-punk.read_file(target_instructions)
+punk.file_load(file_directory)
+punk.read_instructions(instructions_pt4)
+print(punk.file_directory)
 
 # print(punk.line_split(instructions_pt1))
